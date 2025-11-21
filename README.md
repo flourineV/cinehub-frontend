@@ -1,64 +1,168 @@
-# CineHub Frontend - Website Đặt Vé Xem Phim
+# CineHub Frontend
 
-Dự án frontend cho website đặt vé xem phim được xây dựng với React TypeScript + Vite và SWC.
+Website giao diện người dùng cho hệ thống **đặt vé xem phim** (CineHub). Dự án tập trung vào trải nghiệm người dùng: xem danh sách phim, chi tiết phim, chọn suất chiếu/ghế, quản lý tài khoản… (tuỳ theo scope backend/API).
 
-## 🏗️ Cấu Trúc Thư Mục
+---
 
+## 1) Công nghệ sử dụng
+
+- **React + TypeScript**
+- **Vite** (build tool)
+- **Tailwind CSS** (styling)
+- **ESLint** (code quality)
+
+> Nếu dự án có dùng thêm thư viện (axios, react-router-dom, zustand/redux, socket…), bạn có thể bổ sung vào mục này.
+
+---
+
+## 2) Tính năng chính (tổng quan)
+
+- Trang chủ: giới thiệu / phim nổi bật (tuỳ thiết kế)
+- Danh sách phim: hiển thị phim đang chiếu / sắp chiếu (tuỳ dữ liệu)
+- Chi tiết phim: mô tả, trailer, suất chiếu (nếu có)
+- Đặt vé: chọn rạp, suất chiếu, ghế ngồi (nếu có)
+- Tài khoản: đăng ký/đăng nhập, lịch sử đặt vé (nếu có)
+- UI **Responsive** (Mobile / Tablet / Desktop)
+
+---
+
+## 3) Cấu trúc thư mục
+
+```bash
+CINEHUB-FRONTEND/
+├── public/
+├── src/
+│   ├── components/     # Component tái sử dụng (Button, Modal, Card...)
+│   ├── constants/      # Hằng số (keys, enums, config, routes name...)
+│   ├── contexts/       # React Context (Auth/Theme/...)
+│   ├── hooks/          # Custom hooks
+│   ├── pages/          # Màn hình (Home, Movies, MovieDetail, Booking...)
+│   ├── routes/         # Định nghĩa routes (React Router nếu có)
+│   ├── services/       # API services / http client
+│   ├── stores/         # State management (store)
+│   ├── styles/         # Global styles / theme / style helpers
+│   ├── types/          # TypeScript types/interfaces
+│   ├── utils/          # Helper functions
+│   ├── App.tsx
+│   ├── env.d.ts
+│   ├── index.css
+│   └── main.tsx
+├── index.html
+├── eslint.config.js
+├── postcss.config.js
+├── tailwind.config.js
+├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
+├── vercel.json
+├── vite.config.ts
+└── README.md
 ```
-src/
-├── assets/                 # Static assets (images, icons)
-├── components/            # React components
-│   ├── common/           # Common/shared components
-│   ├── layout/           # Layout components (Header, Footer, Layout)
-│   ├── movie/            # Movie-related components (MovieCard, MovieGrid)
-│   ├── booking/          # Booking-related components
-│   └── auth/             # Authentication components
-├── pages/                # Page components
-│   ├── Home/             # Homepage
-│   ├── Movies/           # Movies listing page
-│   ├── MovieDetail/      # Movie detail page
-│   ├── Booking/          # Booking flow pages
-│   ├── Profile/          # User profile pages
-│   └── Auth/             # Login/Register pages
-├── hooks/                # Custom React hooks
-│   ├── useMovies.ts      # Movies data fetching
-│   ├── useBooking.ts     # Booking management
-│   └── useSeatSelection.ts # Seat selection logic
-├── services/             # API services and HTTP clients
-│   └── api.ts            # Main API service
-├── contexts/             # React contexts
-│   └── AuthContext.tsx   # Authentication context
-├── types/                # TypeScript type definitions
-│   └── index.ts          # All type definitions
-├── utils/                # Utility functions
-│   └── index.ts          # Helper functions
-├── constants/            # App constants
-│   └── index.ts          # API endpoints, configs
-├── styles/               # Global CSS styles
-│   └── globals.css       # Global styling
-└── stores/               # State management (future use)
+
+---
+
+## 4) Yêu cầu hệ thống
+
+- **Node.js >= 18**
+- **npm** (hoặc yarn/pnpm)
+
+Kiểm tra:
+```bash
+node -v
+npm -v
 ```
 
-## 🎯 Tính Năng Chính
+---
 
-- **Trang chủ**: Hero section, giới thiệu tính năng
-- **Danh sách phim**: Hiển thị phim đang chiếu, sắp chiếu
-- **Chi tiết phim**: Thông tin chi tiết, trailer, suất chiếu
-- **Đặt vé**: Chọn rạp, suất chiếu, ghế ngồi
-- **Thanh toán**: Xử lý thanh toán online
-- **Quản lý tài khoản**: Đăng ký, đăng nhập, lịch sử đặt vé
+## 5) Cài đặt & chạy dự án
 
-## 🛠️ Công Nghệ Sử Dụng
+### 5.1 Clone source
+```bash
+git clone https://github.com/flourineV/cinehub-frontend.git
+cd cinehub-frontend
+```
 
-- **React 18** - UI Library
-- **TypeScript** - Type safety
-- **Vite** - Build tool
-- **SWC** - Fast compiler
-- **CSS Modules** - Styling
-- **Context API** - State management
+### 5.2 Cài dependencies
+```bash
+npm install
+```
 
-## 📱 Responsive Design
+### 5.3 Tạo file môi trường (nếu dự án dùng env)
 
-- Mobile-first approach
-- Tablet và desktop support
-- Modern CSS Grid và Flexbox
+Tạo file `.env` ở thư mục gốc (cùng cấp `package.json`).
+
+Ví dụ (Vite yêu cầu prefix `VITE_`):
+```env
+VITE_API_BASE_URL=http://localhost:8080
+VITE_APP_NAME=CineHub
+```
+
+> Nếu code bạn đang đọc biến env khác tên, hãy đổi cho đúng.
+
+### 5.4 Chạy dev
+```bash
+npm run dev
+```
+
+Mặc định Vite chạy tại:
+- http://localhost:5173
+
+---
+
+## 6) Scripts
+
+Tuỳ theo `package.json`, thường có các lệnh:
+
+```bash
+npm run dev       # chạy dev server
+npm run build     # build production
+npm run lint      # kiểm tra eslint
+```
+
+---
+
+## 7) Triển khai (Deploy)
+
+### 7.1 Build production
+```bash
+npm run build
+```
+Output mặc định: `dist/`
+
+### 7.2 Deploy Vercel (nếu dùng)
+- **Framework preset:** Vite
+- **Build command:** `npm run build`
+- **Output directory:** `dist`
+- Set Environment Variables giống file `.env`
+
+---
+
+## 8) Troubleshooting
+
+### 8.1 PowerShell báo lỗi khi gõ `bash`
+Nếu bạn đang mở Terminal bằng **PowerShell** và gõ `bash` sẽ báo:
+`'bash' is not recognized...`
+
+✅ Cách xử lý:
+- Không cần gõ `bash`. Chạy trực tiếp:
+  ```bash
+  npm install
+  npm run dev
+  ```
+- Hoặc đổi terminal sang **Git Bash** trong VS Code:
+  - Terminal → Select Default Profile → Git Bash
+
+### 8.2 Không gọi được API
+- Kiểm tra `VITE_API_BASE_URL` đúng chưa
+- Backend đã chạy chưa
+- Backend đã bật CORS cho domain frontend chưa
+
+### 8.3 Tailwind không ăn style
+- Kiểm tra `tailwind.config.js` phần `content`
+- Kiểm tra `index.css` đã được import trong `main.tsx` chưa
+
+---
+
+## 9) License
+
+Dự án phục vụ mục đích học tập / nội bộ.
