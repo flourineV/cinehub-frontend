@@ -218,7 +218,7 @@ const Header = () => {
                 <div className="absolute right-0 mt-2 w-36 bg-white rounded-lg shadow-lg border border-gray-200 z-[9999] overflow-hidden">
                   <button
                     onClick={() => {
-                      console.log("🇻🇳 Switching to Vietnamese");
+                      console.log("🇻🇳 Switching to Vietnamese..."); // switching to Vietnamese
                       setLanguage("vi");
                       setIsLanguageOpen(false);
                     }}
