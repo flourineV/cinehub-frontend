@@ -104,7 +104,6 @@ function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [isProcessingLogin, setIsProcessingLogin] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
-  const [signupError, setSignupError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { user, signin, signup, loading, clearError } = useAuthStore();
 
@@ -480,9 +479,9 @@ function AuthPage() {
                   )}
                 </button>
 
-                {signupError && isSignUp && (
+                {localError && isSignUp && (
                   <p className="text-red-500 text-center text-sm mt-2 font-medium bg-red-50 py-1 rounded-md">
-                    {signupError}
+                    {localError}
                   </p>
                 )}
               </form>

@@ -148,7 +148,14 @@ export default function ManagerShowtimeTable({
         theaterId: managedTheaterId,
         roomId: roomFilter || undefined,
         movieId: movieFilter || undefined,
-        showtimeId: debouncedSearch || undefined,
+        // Only pass showtimeId if it looks like a valid UUID
+        showtimeId:
+          debouncedSearch &&
+          /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+            debouncedSearch
+          )
+            ? debouncedSearch
+            : undefined,
         startOfDay: startOfDayFilter || undefined,
         endOfDay: endOfDayFilter || undefined,
       };
@@ -405,8 +412,11 @@ export default function ManagerShowtimeTable({
       </div>
 
       {/* Filters Row 2: Dropdowns */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-3">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
         <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1">
+            Phim
+          </label>
           <CustomDropdown
             options={[
               { value: "", label: "Tất cả phim" },
@@ -423,6 +433,9 @@ export default function ManagerShowtimeTable({
         </div>
 
         <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1">
+            Phòng
+          </label>
           <CustomDropdown
             options={[
               { value: "", label: "Tất cả phòng" },

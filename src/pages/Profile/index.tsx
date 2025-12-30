@@ -1174,6 +1174,19 @@ const Profile = () => {
                           <p className="text-sm text-gray-500">
                             {t("profile.orderCode")}: {order.orderCode}
                           </p>
+                          {order.theaterName && (
+                            <p className="text-sm text-gray-600 mt-1">
+                              <span className="font-medium">
+                                {t("profile.pickupLocation")}:
+                              </span>{" "}
+                              {order.theaterName}
+                            </p>
+                          )}
+                          {order.theaterAddress && (
+                            <p className="text-xs text-gray-500">
+                              {order.theaterAddress}
+                            </p>
+                          )}
                         </div>
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-semibold ${

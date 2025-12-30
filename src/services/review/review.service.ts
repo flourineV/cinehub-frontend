@@ -91,4 +91,18 @@ export const reviewService = {
     const res = await reviewClient.post<ReviewResponse>(`/${id}/hide`);
     return res.data;
   },
+
+  // DISMISS REPORT (admin/manager bỏ qua báo cáo)
+  dismissReport: async (id: string): Promise<ReviewResponse> => {
+    const res = await reviewClient.post<ReviewResponse>(
+      `/${id}/dismiss-report`
+    );
+    return res.data;
+  },
+
+  // UNHIDE REVIEW (admin/manager hiện lại review đã ẩn)
+  unhideReview: async (id: string): Promise<ReviewResponse> => {
+    const res = await reviewClient.post<ReviewResponse>(`/${id}/unhide`);
+    return res.data;
+  },
 };

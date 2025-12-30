@@ -154,6 +154,14 @@ const PopcornDrinkPage = () => {
       const orderData = {
         userId: user.id,
         theaterId: selectedTheater.id,
+        theaterName:
+          language === "en" && selectedTheater.nameEn
+            ? selectedTheater.nameEn
+            : selectedTheater.name,
+        theaterAddress:
+          language === "en" && selectedTheater.addressEn
+            ? selectedTheater.addressEn
+            : selectedTheater.address,
         paymentMethod: "ZALOPAY",
         items: cart.map((item) => ({
           fnbItemId: item.id,

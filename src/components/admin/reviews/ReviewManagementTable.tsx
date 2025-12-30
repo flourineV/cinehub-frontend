@@ -12,6 +12,8 @@ import {
   Eye,
   EyeOff,
   AlertTriangle,
+  CheckCircle,
+  RotateCcw,
 } from "lucide-react";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
@@ -199,6 +201,66 @@ export default function ReviewManagementTable(): React.JSX.Element {
     } catch (err) {
       console.error(err);
       Swal.fire({ icon: "error", title: "Không thể ẩn đánh giá" });
+    } finally {
+      setHidingId(null);
+    }
+  }
+
+  async function handleUnhideReview(id: string) {
+    const confirm = await Swal.fire({
+      title: "Hiện lại đánh giá này?",
+      text: "Đánh giá sẽ hiển thị cho người dùng",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Hiện lại",
+      cancelButtonText: "Hủy",
+      confirmButtonColor: "#22c55e",
+    });
+    if (!confirm.isConfirmed) return;
+
+    try {
+      setHidingId(id);
+      await reviewService.unhideReview(id);
+      Swal.fire({
+        icon: "success",
+        title: "Đã hiện lại đánh giá",
+        timer: 1000,
+        showConfirmButton: false,
+      });
+      fetchReviews(false);
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: "error", title: "Không thể hiện lại đánh giá" });
+    } finally {
+      setHidingId(null);
+    }
+  }
+
+  async function handleDismissReport(id: string) {
+    const confirm = await Swal.fire({
+      title: "Bỏ qua báo cáo này?",
+      text: "Đánh giá sẽ không còn bị đánh dấu là bị báo cáo",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Bỏ qua",
+      cancelButtonText: "Hủy",
+      confirmButtonColor: "#3b82f6",
+    });
+    if (!confirm.isConfirmed) return;
+
+    try {
+      setHidingId(id);
+      await reviewService.dismissReport(id);
+      Swal.fire({
+        icon: "success",
+        title: "Đã bỏ qua báo cáo",
+        timer: 1000,
+        showConfirmButton: false,
+      });
+      fetchReviews(false);
+    } catch (err) {
+      console.error(err);
+      Swal.fire({ icon: "error", title: "Không thể bỏ qua báo cáo" });
     } finally {
       setHidingId(null);
     }
@@ -543,7 +605,7 @@ export default function ReviewManagementTable(): React.JSX.Element {
                         </span>
                       </td>
                       <td className="px-6 py-3 text-center">
-                        <div className="flex items-center justify-center gap-2">
+                        <div className="flex items-center justify-center gap-1">
                           <button
                             onClick={() => openModal(r)}
                             className="p-2 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors"
@@ -551,6 +613,22 @@ export default function ReviewManagementTable(): React.JSX.Element {
                           >
                             <Eye size={16} />
                           </button>
+                          {/* Nút bỏ qua báo cáo - chỉ hiện khi review bị reported */}
+                          {r.reported && (
+                            <button
+                              onClick={() => handleDismissReport(r.id)}
+                              disabled={hidingId === r.id}
+                              className="p-2 rounded-lg text-orange-600 hover:bg-orange-50 transition-colors disabled:opacity-50"
+                              title="Bỏ qua báo cáo"
+                            >
+                              {hidingId === r.id ? (
+                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-orange-600 border-t-transparent"></div>
+                              ) : (
+                                <CheckCircle size={16} />
+                              )}
+                            </button>
+                          )}
+                          {/* Nút ẩn - hiện khi review chưa bị ẩn */}
                           {status !== "HIDDEN" && (
                             <button
                               onClick={() => handleHideReview(r.id)}
@@ -562,6 +640,21 @@ export default function ReviewManagementTable(): React.JSX.Element {
                                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-red-600 border-t-transparent"></div>
                               ) : (
                                 <EyeOff size={16} />
+                              )}
+                            </button>
+                          )}
+                          {/* Nút hiện lại - chỉ hiện khi review đã bị ẩn */}
+                          {status === "HIDDEN" && (
+                            <button
+                              onClick={() => handleUnhideReview(r.id)}
+                              disabled={hidingId === r.id}
+                              className="p-2 rounded-lg text-green-600 hover:bg-green-50 transition-colors disabled:opacity-50"
+                              title="Hiện lại đánh giá"
+                            >
+                              {hidingId === r.id ? (
+                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-green-600 border-t-transparent"></div>
+                              ) : (
+                                <RotateCcw size={16} />
                               )}
                             </button>
                           )}

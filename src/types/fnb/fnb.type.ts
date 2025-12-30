@@ -29,6 +29,8 @@ export interface FnbCalculationResponse {
 export interface FnbOrderRequest {
   userId: string;
   theaterId: string;
+  theaterName: string;
+  theaterAddress: string;
   paymentMethod: string;
   items: FnbOrderItemRequest[];
   language?: string;
@@ -43,6 +45,8 @@ export interface FnbOrderResponse {
   id: string;
   userId: string;
   theaterId: string;
+  theaterName?: string;
+  theaterAddress?: string;
   orderCode: string;
   totalAmount: number;
   status: string;
