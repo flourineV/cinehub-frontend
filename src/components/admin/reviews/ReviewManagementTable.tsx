@@ -81,15 +81,15 @@ export default function ReviewManagementTable(): React.JSX.Element {
       if (showSkeleton) setLoading(true);
       else setIsRefreshing(true);
 
-      // Fetch reviews for all movies or selected movie
+      // Fetch reviews for all movies or selected movie (admin endpoint - includes HIDDEN)
       let allReviews: ReviewResponse[] = [];
 
       if (movieFilter) {
-        allReviews = await reviewService.getReviewsByMovie(movieFilter);
+        allReviews = await reviewService.getAllReviewsByMovieAdmin(movieFilter);
       } else {
         // Fetch reviews for all movies
         const moviePromises = movies.map((m) =>
-          reviewService.getReviewsByMovie(m.id).catch(() => [])
+          reviewService.getAllReviewsByMovieAdmin(m.id).catch(() => [])
         );
         const results = await Promise.all(moviePromises);
         allReviews = results.flat();

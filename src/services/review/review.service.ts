@@ -56,9 +56,19 @@ export const reviewService = {
     await reviewClient.delete(`/${id}`);
   },
 
-  // GET ALL REVIEWS OF MOVIE
+  // GET ALL REVIEWS OF MOVIE (public - only VISIBLE)
   getReviewsByMovie: async (movieId: string): Promise<ReviewResponse[]> => {
     const res = await reviewClient.get<ReviewResponse[]>(`/movie/${movieId}`);
+    return res.data;
+  },
+
+  // GET ALL REVIEWS OF MOVIE (admin - includes HIDDEN)
+  getAllReviewsByMovieAdmin: async (
+    movieId: string
+  ): Promise<ReviewResponse[]> => {
+    const res = await reviewClient.get<ReviewResponse[]>(
+      `/admin/movie/${movieId}`
+    );
     return res.data;
   },
 

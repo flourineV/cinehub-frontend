@@ -615,10 +615,10 @@ export default function PromotionManagementTable(): React.JSX.Element {
       {isModalOpen && modalData && (
         <div className="fixed inset-0 z-[99999] flex items-center justify-center px-4 py-6">
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
             onClick={closeModal}
           />
-          <div className="relative w-full max-w-2xl bg-white border border-gray-400 rounded-2xl shadow-2xl z-10 overflow-hidden max-h-[90vh] flex flex-col">
+          <div className="relative w-full max-w-2xl bg-white border border-gray-400 rounded-2xl shadow-2xl z-10 max-h-[90vh] flex flex-col">
             {/* Modal Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50">
               <h3 className="text-xl font-bold text-gray-800">

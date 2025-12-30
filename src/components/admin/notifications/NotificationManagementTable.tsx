@@ -353,9 +353,6 @@ export default function NotificationManagementTable(): React.JSX.Element {
           <table className="min-w-full divide-y divide-yellow-400/80 table-fixed">
             <thead className="sticky top-0 z-10 border-b border-gray-400 bg-gray-50">
               <tr>
-                <th className="w-[200px] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Tiêu đề
-                </th>
                 <th className="w-[300px] px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Nội dung
                 </th>
@@ -382,44 +379,45 @@ export default function NotificationManagementTable(): React.JSX.Element {
                   </td>
                 </tr>
               ) : (
-                paginatedNotifications.map((n) => (
-                  <tr
-                    key={n.id}
-                    className="hover:bg-gray-50 transition duration-150"
-                  >
-                    <td className="px-6 py-4 text-sm text-gray-900">
-                      <div className="flex items-center gap-2">
-                        <Bell size={16} className="text-yellow-600" />
-                        <span className="font-medium truncate">{n.title}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-700">
-                      <span className="line-clamp-2">{n.message}</span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span
-                        className={`inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full ${
-                          TYPE_COLORS[n.type] || "bg-gray-100 text-gray-800"
-                        }`}
-                      >
-                        {TYPE_ICONS[n.type]}
-                        {TYPE_LABELS[n.type] || n.type}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-center text-sm text-gray-700">
-                      {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
-                    </td>
-                    <td className="px-6 py-3 text-center">
-                      <button
-                        onClick={() => openModal(n)}
-                        className="p-2 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors"
-                        title="Xem chi tiết"
-                      >
-                        <Bell size={16} />
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                paginatedNotifications.map((n) => {
+                  // Strip HTML tags for table preview
+                  const plainText = n.message
+                    .replace(/<[^>]*>/g, " ")
+                    .replace(/\s+/g, " ")
+                    .trim();
+                  return (
+                    <tr
+                      key={n.id}
+                      className="hover:bg-gray-50 transition duration-150"
+                    >
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        <span className="line-clamp-2">{plainText}</span>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <span
+                          className={`inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full ${
+                            TYPE_COLORS[n.type] || "bg-gray-100 text-gray-800"
+                          }`}
+                        >
+                          {TYPE_ICONS[n.type]}
+                          {TYPE_LABELS[n.type] || n.type}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-center text-sm text-gray-700">
+                        {dayjs(n.createdAt).format("DD/MM/YYYY HH:mm")}
+                      </td>
+                      <td className="px-6 py-3 text-center">
+                        <button
+                          onClick={() => openModal(n)}
+                          className="p-2 rounded-lg text-blue-600 hover:bg-blue-50 transition-colors"
+                          title="Xem chi tiết"
+                        >
+                          <Bell size={16} />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
@@ -459,9 +457,9 @@ export default function NotificationManagementTable(): React.JSX.Element {
 
       {/* Detail Modal */}
       {isModalOpen && modalNotification && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4 py-6">
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
             onClick={closeModal}
           />
 
@@ -528,9 +526,12 @@ export default function NotificationManagementTable(): React.JSX.Element {
                   Nội dung
                 </h4>
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-gray-700 whitespace-pre-wrap">
-                    {modalNotification.message}
-                  </p>
+                  <div
+                    className="text-gray-700 prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{
+                      __html: modalNotification.message,
+                    }}
+                  />
                 </div>
               </div>
 

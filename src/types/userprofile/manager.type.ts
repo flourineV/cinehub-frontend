@@ -14,6 +14,7 @@ export interface ManagerProfileResponse {
   // User profile info if populated
   userProfile?: {
     id: string;
+    userId: string; // auth-service user ID
     username: string;
     fullName: string;
     email: string;

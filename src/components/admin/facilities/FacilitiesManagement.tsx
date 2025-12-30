@@ -1542,11 +1542,11 @@ export default function FacilitiesManagement(): React.JSX.Element {
       {seatModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6">
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setSeatModalOpen(false)}
           />
-          <div className="relative w-full max-w-4xl bg-white border border-gray-400 rounded-2xl shadow-2xl z-10 overflow-hidden max-h-[90vh] flex flex-col">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <div className="relative w-full max-w-4xl bg-white border border-gray-400 rounded-2xl shadow-2xl z-10 max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50 shrink-0">
               <h3 className="text-xl font-bold text-gray-800">
                 {editingSeatId ? "Chỉnh sửa ghế" : "Thêm ghế cho phòng"}
               </h3>
@@ -1557,7 +1557,7 @@ export default function FacilitiesManagement(): React.JSX.Element {
                 <X size={20} />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-6 min-h-0">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <p className="text-sm text-gray-600">
@@ -1661,7 +1661,7 @@ export default function FacilitiesManagement(): React.JSX.Element {
                 ))}
               </div>
             </div>
-            <div className="flex justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
+            <div className="flex justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50 shrink-0">
               <button
                 onClick={() => setSeatModalOpen(false)}
                 className="px-4 py-2 text-sm text-gray-700 border border-gray-400 rounded-lg hover:bg-gray-50"

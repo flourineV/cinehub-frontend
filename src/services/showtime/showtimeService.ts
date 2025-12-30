@@ -175,6 +175,63 @@ export const showtimeService = {
     const res = await showtimeClient.post("/validate", payload);
     return res.data;
   },
+
+  /**
+   * Auto-generate showtimes for a date range
+   */
+  async autoGenerate(
+    startDate: string,
+    endDate: string
+  ): Promise<{
+    totalGenerated: number;
+    totalSkipped: number;
+    message: string;
+    details?: {
+      theaterName: string;
+      roomName: string;
+      movieTitle: string;
+      startTime: string;
+    }[];
+  }> {
+    const res = await showtimeClient.post("/auto-generate", null, {
+      params: { startDate, endDate },
+    });
+    return res.data;
+  },
+
+  /**
+   * Initialize seats for a showtime
+   */
+  async initializeSeats(showtimeId: string): Promise<void> {
+    await showtimeClient.post(`/${showtimeId}/initialize-seats`);
+  },
+
+  /**
+   * Batch initialize seats for multiple showtimes
+   */
+  async batchInitializeSeats(showtimeIds: string[]): Promise<string> {
+    const res = await showtimeClient.post("/seats/initialize-seats", {
+      showtimeIds,
+    });
+    return res.data;
+  },
+
+  /**
+   * Initialize seats for showtimes in a date range
+   */
+  async initializeSeatsByRange(
+    startDate: string,
+    endDate: string
+  ): Promise<string> {
+    const res = await showtimeClient.post(
+      "/seats/initialize-seats/range",
+      null,
+      {
+        params: { startDate, endDate },
+      }
+    );
+    return res.data;
+  },
 };
 
 // Seat Lock Service

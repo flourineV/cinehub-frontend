@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 
 import { managerService, userProfileService } from "@/services/userprofile";
 import { theaterService } from "@/services/showtime/theaterService";
+import { userAdminService } from "@/services/auth/userService";
 import type {
   ManagerProfileResponse,
   UserProfileResponse,
@@ -172,11 +173,24 @@ export default function ManagerTable(): React.JSX.Element {
 
     setCreating(true);
     try {
+      // Get the selected user's auth userId
+      const selectedUserProfile = availableUsers.find(
+        (u) => u.id === selectedUser
+      );
+
       await managerService.createManager({
         userProfileId: selectedUser,
         managedCinemaName: selectedTheater,
         hireDate: hireDate,
       });
+
+      // Update role to manager in auth-service
+      if (selectedUserProfile?.userId) {
+        await userAdminService.updateUserRole(
+          selectedUserProfile.userId,
+          "manager"
+        );
+      }
 
       Swal.fire({
         icon: "success",
@@ -368,7 +382,19 @@ export default function ManagerTable(): React.JSX.Element {
                             });
                             if (confirm.isConfirmed) {
                               try {
+                                // Get userId from userProfile before deleting
+                                const authUserId = manager.userProfile?.userId;
+
                                 await managerService.deleteManager(manager.id);
+
+                                // Revert role to customer in auth-service
+                                if (authUserId) {
+                                  await userAdminService.updateUserRole(
+                                    authUserId,
+                                    "customer"
+                                  );
+                                }
+
                                 Swal.fire({
                                   icon: "success",
                                   title: "Đã xóa quản lý",
